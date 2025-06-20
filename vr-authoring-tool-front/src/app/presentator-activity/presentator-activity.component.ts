@@ -56,7 +56,7 @@ constructor( private activityService: ActivityService, private route: ActivatedR
                 setTimeout(()=>{                           // <<<---using ()=> syntax
                   text.visible = false;
                 }, text.end);
-
+                console.log(text.position)
                 this.messages.push(text)
                 
                 index = index+1
@@ -70,7 +70,7 @@ constructor( private activityService: ActivityService, private route: ActivatedR
                 msg.volume = 1; // From 0 to 1
                 msg.rate = 1; // From 0.1 to 10
                 msg.pitch = 2; // From 0 to 2
-                msg.text = this.activity.initText;
+                msg.text = "Bienvenido a esta actividad, a continuación va a visualizar en el escenario un conjunto de frases que irán cambiando de contenido y posición, cada texto lo debe leer en voz alta";
                 msg.lang = 'es-ES';
                 speechSynthesis.speak(msg);
               }, 2000);
@@ -119,7 +119,7 @@ constructor( private activityService: ActivityService, private route: ActivatedR
           var zSign = Math.round(Math.random()) === 0 ? "-":""
           var xPos = Math.floor(Math.random() * 2) + 1
           var zPos = Math.floor(Math.random() * 5) + 1          
-          const position =`${xSign}${xPos} 1.5 ${zSign}${zPos}`
+          const position =`${xSign}${xPos} 1.5 -${zPos}`
           return position
   }
 
