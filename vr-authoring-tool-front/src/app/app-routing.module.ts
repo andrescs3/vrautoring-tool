@@ -10,9 +10,13 @@ import { BoardModeratorComponent } from './board-moderator/board-moderator.compo
 import { BoardAdminComponent } from './board-admin/board-admin.component';
 import { PresentatorActivityComponent } from './presentator-activity/presentator-activity.component';
 import { PresentatorEditorComponent } from './presentator-editor/presentator-editor.component';
+import { AcitivtyListComponent } from './acitivty-list/acitivty-list.component';
+import { ConcentrationEditorComponent } from './concentration-editor/concentration-editor.component';
+import { ConcentrationActivityComponent } from './concentration-activity/concentration-activity.component';
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent },
+  { path: 'home', component: AcitivtyListComponent },
+  { path: 'welcome', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'profile', component: ProfileComponent },
@@ -20,8 +24,16 @@ const routes: Routes = [
   { path: 'mod', component: BoardModeratorComponent },
   { path: 'admin', component: BoardAdminComponent },
   { path: 'presentator/:id', component: PresentatorActivityComponent },
+  { path: 'concentration/:id', component: ConcentrationActivityComponent },
+  
+  { path: 'activity-list', component: AcitivtyListComponent },
   { path: 'presentator-edit', component: PresentatorEditorComponent },
   { path: 'presentator-edit/:id', component: PresentatorEditorComponent },
+  { path: 'presentator-edit/:id/:copy', component: PresentatorEditorComponent },
+
+  { path: 'concentration-edit', component: ConcentrationEditorComponent },
+  { path: 'concentration-edit/:id', component: ConcentrationEditorComponent },
+  { path: 'concentration-edit/:id/:copy', component: ConcentrationEditorComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' }
 ];
 

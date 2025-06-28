@@ -1,5 +1,11 @@
 const mongoose = require("mongoose");
 
+const ImageContent = new mongoose.Schema({
+  source: String,
+  xPos: String,
+  yPos: String
+});
+
 const Activity = mongoose.model(
   "Activity",
   new mongoose.Schema({
@@ -16,6 +22,17 @@ const Activity = mongoose.model(
     initText: String,
     endText: String,
     preview: Boolean,
+    creationDate: Number,
+    color: String,
+    times:[{
+      type: String      
+    }],
+    activityType: Number,
+    images:[{
+      type: ImageContent, 
+      default:[]      
+    }],
+    
           
   })
 );

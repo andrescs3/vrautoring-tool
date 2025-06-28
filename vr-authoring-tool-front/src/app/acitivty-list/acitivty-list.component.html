@@ -1,0 +1,61 @@
+<h2>Listado de actividades</h2>
+
+
+<!-- <button class="btn btn-info" type="button" (click)="redirect($event)">Crear nueva actividad</button> -->
+
+<div class="row buttonMenu">
+  <div class="dropdown">
+    <button (click)="showMenu()" class="dropbtn btn btn-primary">Crear nueva aplicación</button>
+    <div id="myDropdown" [ngClass]="{'dropdown-content':true,'show': blnShowMenu }">
+      <a href="/presentator-edit/">Actividad de presentador</a>
+      <a href="/concentration-edit/">Actividad de concentración</a>
+    </div>
+  </div>
+</div>
+    
+<div class="row">
+  <div class="col">
+      <table class="table">
+        <thead>
+            <tr>
+                <th>Titulo</th>      
+                <th>Tipo de actividad</th>   
+                <th>Fecha de creación</th>     
+                <th>Acciones</th>                  
+              </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of activityList">
+                <td> {{item.title}} </td>
+                <td *ngIf="item.activityType === 0">  
+                      Presentador
+                 </td>
+                 <td *ngIf="item.activityType === 1">
+                      Concentración
+                 </td>
+                <td> {{item.creationDate | date :'short'}} </td>
+                     <td >
+                      <a *ngIf="item.activityType === 0" href="/presentator-edit/{{item._id}}">Editar</a> 
+                     <a *ngIf="item.activityType === 1" href="/concentration-edit/{{item._id}}">Editar</a> &nbsp;| 
+
+                     <a *ngIf="item.activityType === 0" href="/presentator-edit/{{item._id}}/1" target="_blank">Crear Copia</a>   
+                     <a *ngIf="item.activityType === 1" href="/concentration-edit/{{item._id}}/1" target="_blank">Crear Copia</a> &nbsp;|
+                     
+                     
+
+                     <a *ngIf="item.activityType === 1" href="/concentration/{{item._id}}" target="_blank">Ver Actividad</a>  
+                     <a *ngIf="item.activityType === 0" href="/presentator/{{item._id}}" target="_blank">Ver Actividad</a> &nbsp;|
+
+                     <button type="button" class="btn btn-success" (click)="copy(item.activityType, item._id)" >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16" alt="Copiar enlace al portapapeles">
+                        <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"></path>
+                        <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"></path>
+                        </svg>                                        
+                    </button>
+                     
+                </td>
+            </tr>
+        </tbody>
+      </table>
+  </div>
+</div>

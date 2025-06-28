@@ -31,6 +31,7 @@ export class AppComponent {
 
   logout(): void {
     this.tokenStorageService.signOut();
+    localStorage["perseActive"] = false;
     window.location.reload();
   }
 }

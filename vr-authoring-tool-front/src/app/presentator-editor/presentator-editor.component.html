@@ -1,13 +1,16 @@
 
 
-    <h2>Crear actividad nueva</h2>
+    <h2 *ngIf="!copy">Crear Actividad de presentador nueva</h2>
+    <h2 *ngIf="copy">Crear copia de {{activity.title}} - Actividad del presentador </h2>
+    
+
     
     <div class="row">
       <div class="col">
         <form [formGroup]="form" (ngSubmit)="submit()">
       
             <div class="form-group">
-                <label for="title">Title</label>
+                <label for="title">Titulo</label>
                 <input 
                 formControlName="title"
                 id="title" 
@@ -20,33 +23,52 @@
             </div>
         
             <div class="form-group">
-                <label for="content">Content</label>
+                <label for="content">Texo de la actividad</label>
                 <textarea 
                     formControlName="content"
                     id="content" 
                     type="text" 
-                    class="form-control" [(ngModel)]="activity.content">
+                    class="form-control" [(ngModel)]="activity.content" style="height: 350px;" (change)="changeDataSet()">
                 </textarea>
                 <div *ngIf="f.content.touched && f.content.invalid" class="alert alert-danger">
                     <div *ngIf="f.content.errors?.required">Content is required.</div>
                 </div>
+
+ 
+
             </div>
-        
+
+            
+
+
             <div class="form-group">
-                <label for="timeRange">Time Range</label>
+                <label for="timeRange">Rango de tiempo entre texto</label>
                 <input 
                 formControlName="timeRange"
                 id="timeRange" 
                 type="text" 
-                class="form-control" [(ngModel)]="activity.timeRange">
+                class="form-control" [(ngModel)]="activity.timeRange" (change)="changeDataSet()">
         
                 <div *ngIf="f.timeRange.touched && f.timeRange.invalid" class="alert alert-danger">
                     <div *ngIf="f.timeRange.errors?.required">Time Range is required.</div>
                 </div>
             </div>
-        
+
             <div class="form-group">
-                <label for="initText">Init Text</label>
+                <label>Personalizar tiempo por frase (De click sobre el valor a cambiar) </label>
+                <hot-table [hotId]="tableID" [settings]="hotSettings">            
+
+                </hot-table>
+
+            </div>
+
+            <div class="form-group">
+                <label for="initText">Color de letra</label>
+                <input class="form-control" [value]="activity.color" [style.background]="activity.color" [cpOutputFormat]="'hex'" style="width: 50%;"
+                [(colorPicker)]="activity.color" [(ngModel)]="activity.color" formControlName="color" />
+            </div>
+            <!-- <div class="form-group">
+                <label for="initText">Instrucción inicial</label>
                 <textarea 
                     formControlName="initText"
                     id="initText" 
@@ -60,7 +82,7 @@
         
         
             <div class="form-group">
-                <label for="endText">End Text</label>
+                <label for="endText">Instrucción final</label>
                 <textarea 
                     formControlName="endText"
                     id="endText" 
@@ -70,12 +92,14 @@
                 <div *ngIf="f.endText.touched && f.endText.invalid" class="alert alert-danger">
                     <div *ngIf="f.endText.errors?.required">End Text is required.</div>
                 </div>
-            </div>
+            </div> -->
         
         
-          
-            <button class="btn btn-primary" type="submit">Submit</button>
-            <button class="btn btn-primary" type="button" (click)="preview($event)">Preview</button>
+            
+            <button class="btn btn-info" type="button" (click)="preview($event)">Vista Previa</button>
+            
+            <button class="btn btn-primary preview" type="submit">Guardar</button>
+            
         </form>
       </div>
       <div class="col">

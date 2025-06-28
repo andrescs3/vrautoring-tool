@@ -6,8 +6,11 @@ export class Spectator {
     constructor(i:number) {    
         
         if(i%2===0){
-            this.modelName = '#woman'
-            this.scale = '0.0008 0.0008 0.0008'
+           // this.modelName = '#woman'
+           // this.scale = '0.0008 0.0008 0.0008'
+
+            this.modelName = '#men'
+            this.scale = '0.6 0.6 0.6'
         }
         else{
             this.modelName = '#men'

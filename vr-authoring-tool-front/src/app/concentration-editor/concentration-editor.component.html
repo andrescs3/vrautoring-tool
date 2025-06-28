@@ -1,0 +1,193 @@
+
+
+    <h2 *ngIf="!copy">Crear actividad de concentración nueva </h2>
+    <h2 *ngIf="copy">Crear copia de {{activity.title}} - Concentración </h2>
+    
+
+    
+    <div class="row">
+      <div class="col">
+        <form [formGroup]="form" (ngSubmit)="submit()">
+      
+            <div class="form-group">
+                <label for="title"><h4>Titulo</h4></label>
+                <input 
+                formControlName="title"
+                id="title" 
+                type="text" 
+                class="form-control" [(ngModel)]="activity.title" >
+                <div *ngIf="f.title.touched && f.title.invalid" class="alert alert-danger">
+                    <div *ngIf="f.title.errors?.required">Title is required.</div>
+                    
+                </div>
+            </div>
+        
+            <div class="form-group">
+                <label for="content"> <h4> Agregar enlaces a las imagenes (Usar <a href="https://imgur.com/upload">imgur</a> para cargar las imagenes) </h4></label>
+                <br />
+                <br />
+                <label for="content" id="lblEdit" [hidden]="!isEdit" > <h4> Editando imagen </h4></label>
+                <div class="row">
+                <div class="col-lg">
+                    <input 
+                    formControlName="link"
+                    id="link" 
+                    type="text" 
+                    class="form-control" [(ngModel)]="link" placeholder="Escriba o pegue la URL de la imagen aquí" /> 
+                  </div>
+
+                  
+                </div>
+                <div class="row">
+                    <div class="col-lg">
+                        <label for="xPos"> <h4> Ubicación Horizontal de la imagen </h4></label> &nbsp; &nbsp; <br/>
+                        <select [(ngModel)]="xPosSelected"  formControlName="xPos" >
+                            <option *ngFor="let x of xPositions" [ngValue]="x.id">{{x.name}}</option>
+                        </select> <br/><br/>
+    
+                        <label for="yPos"> <h4>Ubicación Vertical de la imagen </h4></label>  &nbsp; &nbsp; <br/>
+                        <select [(ngModel)]="yPosSelected" formControlName="yPos" >
+                            <option *ngFor="let y of yPositions" [ngValue]="y.id">{{y.name}}</option>
+                        </select> 
+                      </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm"></div>
+                    <div class="col-sm"></div>
+                    <div class="col-sm">
+                      <button type="button" class="btn btn-success" (click)="addText()" [hidden]="isEdit">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+                              <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path>
+                          </svg>
+                          Agregar imagen
+                      </button>
+
+                      <button type="button" class="btn btn-success" (click)="updateItem(itemEditIndex)" [hidden]="!isEdit">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path>
+                        </svg>
+                        Guardar Cambios 
+                    </button>
+                    &nbsp;
+                    <button [hidden]="!isEdit" type="button" class="btn btn-info" (click)="cancelEdit()">Cancelar</button> 
+                    </div>
+                  </div>
+                <br/>
+                <br/>
+                <br/>
+                  <h2>Imagenes ingresadas:</h2>
+                <ng-template ngFor let-item [ngForOf]="activity.images" let-i="index" >
+                    <hr />
+                    
+                    <div class="row">                       
+                        <div class="col-sm">                           
+                                                            
+                                    <img [src]="item.source" class="images">                                                               
+                          </div>
+                          <div class="col-sm">                           
+                                                            
+                            <h4>Posición:</h4>
+                            <p>{{getItemDesc(item.xPos, item.yPos)}}</p>
+
+                        </div>
+                         
+
+
+                          <div class="col-sm">
+
+                            <button [hidden]="isEdit" type="button" class="btn btn-info" (click)="editItem(i)">Editar</button> 
+                            &nbsp;
+                            <button [hidden]="isEdit" type="button" class="btn btn-primary" (click)="moveItem(i,i-1)" *ngIf="i!==0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+                                 <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"></path>
+                                 </svg>
+                                Subir
+                              </button>
+                              &nbsp;
+                            <button [hidden]="isEdit" type="button" class="btn btn-secondary" (click)="moveItem(i,i+1)" *ngIf="i!==this.activity.images.length">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"></path>
+                                </svg>
+                                Bajar
+                              </button>
+                              &nbsp;
+                            <button [hidden]="isEdit" type="button" class="btn btn-outline-danger" (click)="deleteItem(i)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"></path>
+                                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"></path>
+                                    </svg>
+                                Borrar
+                              </button>
+                            
+                          </div>
+                          <hr/>
+                        </div>                 
+                </ng-template>
+            </div>
+
+
+            
+        
+            <div class="form-group">
+                <label for="timeRange">Tiempo entre imagenes (segundos)</label>
+                <input 
+                formControlName="timeRange"
+                id="timeRange" 
+                type="text" 
+                class="form-control" [(ngModel)]="activity.timeRange">
+        
+                <div *ngIf="f.timeRange.touched && f.timeRange.invalid" class="alert alert-danger">
+                    <div *ngIf="f.timeRange.errors?.required">Time Range is required.</div>
+                </div>
+            </div>
+
+
+
+
+            <!-- <div class="form-group">
+                <label for="initText">Instrucción inicial</label>
+                <textarea 
+                    formControlName="initText"
+                    id="initText" 
+                    type="text" 
+                    class="form-control" [(ngModel)]="activity.initText">
+                </textarea>
+                <div *ngIf="f.initText.touched && f.initText.invalid" class="alert alert-danger">
+                    <div *ngIf="f.initText.errors?.required">Init Text is required.</div>
+                </div>
+            </div>
+        
+        
+            <div class="form-group">
+                <label for="endText">Instrucción final</label>
+                <textarea 
+                    formControlName="endText"
+                    id="endText" 
+                    type="text" 
+                    class="form-control" [(ngModel)]="activity.endText">
+                </textarea>
+                <div *ngIf="f.endText.touched && f.endText.invalid" class="alert alert-danger">
+                    <div *ngIf="f.endText.errors?.required">End Text is required.</div>
+                </div>
+            </div> -->
+        
+        
+            
+            <button class="btn btn-info" type="button" (click)="preview($event)">Vista Previa</button>
+            
+            <button class="btn btn-primary preview" type="submit">Guardar</button>
+            
+        </form>
+      </div>
+      <div class="col">
+        <iframe width="100%" height="800" [attr.src]="getUrl() | safe" *ngIf="activity._id"></iframe>
+      </div>
+
+    </div>
+
+
+
+
+

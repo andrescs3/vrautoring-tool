@@ -4,6 +4,8 @@ const dbConfig = require("./app/config/db.config");
 
 const app = express();
 
+global.__basedir = __dirname;
+
 var corsOptions = {
   origin: "http://localhost:8081"
 };
@@ -43,6 +45,7 @@ app.get("/", (req, res) => {
 require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
 require("./app/routes/activity.routes")(app);
+require("./app/routes/file.routes")(app)
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

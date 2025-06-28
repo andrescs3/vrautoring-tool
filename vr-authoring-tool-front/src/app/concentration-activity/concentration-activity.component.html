@@ -1,0 +1,225 @@
+<a-scene cursor="rayOrigin: mouse; fuse: false" raycaster="objects: .raycastable" >
+    <a-assets (loaded)="loaded($event)">
+        <a-asset-item 
+          id="chair"
+          src="/assets/resources/chair/scene.gltf" response-type="arraybuffer">
+        </a-asset-item>
+  
+        <a-asset-item 
+        id="lecturn"
+        src="/assets/resources/lecturn/scene.gltf" response-type="arraybuffer"></a-asset-item>
+  
+        <a-asset-item 
+        id="lectern"
+        src="/assets/resources/lectern/scene.gltf" response-type="arraybuffer"></a-asset-item>
+  
+        <a-asset-item 
+        id="male"
+        src="/assets/resources/male/scene.gltf" response-type="arraybuffer"></a-asset-item>
+  
+        <a-asset-item 
+        id="board"
+        src="/assets/resources/board/scene.gltf" response-type="arraybuffer"></a-asset-item>
+  
+        <a-asset-item 
+        id="door"
+        src="/assets/resources/door/scene.gltf" response-type="arraybuffer"></a-asset-item>
+
+        <a-asset-item 
+        id="men"
+        src="/assets/resources/sitting-woman/scene.gltf" response-type="arraybuffer"></a-asset-item>
+  
+        <a-asset-item 
+        id="woman"
+        src="/assets/resources/sitting-woman/scene.gltf" response-type="arraybuffer"></a-asset-item>
+
+        <a-asset-item 
+        id="smen"
+        src="/assets/resources/sitting-men/scene.gltf" ></a-asset-item>
+
+        <audio id="inicio" src="/assets/resources/audio/pcinicio2.mp3" preload="auto" crossorigin="anonymous"></audio>
+        <audio id="fin" src="/assets/resources/audio/pfin.mp3" preload="auto" crossorigin="anonymous"></audio>
+        
+        
+        <img id="wood-texture" src="/assets/resources/textures/wall.jpg" crossorigin='anonymous'>
+        <img id="celing-texture" src="/assets/resources/lecturn/ceiling.jpg" crossorigin='anonymous'>
+        <img id="upper-floor-texture" src="/assets/resources/textures/floor.jpg" crossorigin='anonymous'>
+        <img id="bottom-floor-texture" src="/assets/resources/textures/down-floor.jpg" crossorigin='anonymous'>
+        <img id="door-texture" src="/assets/resources/door/door.png" crossorigin='anonymous'>
+        <img id="instruction-texture" src="/assets/resources/icons/information.jpg" crossorigin='anonymous'>
+        <img id="play-texture" src="/assets/resources/icons/play.png" crossorigin='anonymous'>
+  
+        <img id="play-textur2e" src="http://localhost:8080/files/ddabdcbac78dc6c76ed8bd925df74356aa.jpg" crossorigin='anonymous'>
+  
+
+        <ng-template ngFor let-item [ngForOf]="messages" let-i="index" >
+          <img [attr.id]="getIndexId(i)" [attr.src]="item.content" crossorigin='anonymous'>
+        </ng-template>
+
+
+      </a-assets>
+
+      <a-entity
+        position="0 1.6 0"
+        camera look-controls="magicWindowTrackingEnabled: true; touchEnabled: true; mouseEnabled: true">
+        
+      </a-entity>
+
+      <!-- Hand controls -->
+      <a-entity id="leftHand" laser-controls="hand: left" raycaster="objects: .raycastable"></a-entity>
+      <a-entity id="rightHand" laser-controls="hand: right" raycaster="objects: .raycastable" line="color: #118A7E"></a-entity>
+   
+       <ng-template ngFor let-item [ngForOf]="messages" let-i="index" >
+        <a-entity [attr.id]="getEntityId(i)" geometry="primitive: plane;height: 3.5; width: 3.5"  [attr.material]="getStyleId(i)" [attr.scale]="buttonScalePlay" [attr.position]="item.position" *ngIf="isLoaded && item.visible"
+        ></a-entity>
+      </ng-template>  
+    
+
+
+
+
+    
+    
+            
+    <!-- <ng-template ngFor let-item [ngForOf]="spectators" let-i="index" >
+
+      <a-entity   [attr.gltf-model]="item.modelName" [attr.position]="item.position" [attr.scale]="item.scale"  animation-mixer  *ngIf="isLoaded"></a-entity>
+    </ng-template> -->
+    
+    
+             
+    
+    
+             
+
+
+        
+     
+    <!-- <a-entity sound="src: #inicio" #pinicio></a-entity> -->
+
+      <a-sky color="#191919" material="src: #wood-texture"  sound="src:#inicio" #pinicio class="raycastable" raycastable>
+        <!-- <a-sphere cursor="rayOrigin: mouse" color="green" radius="0.25" position="-1 1 0" (click)="playSound()"></a-sphere> -->
+        <a-entity id="refresh-button" geometry="primitive: circle"  material="color: white; src: #play-texture" [attr.scale]="buttonScaleInfo" position="-1 3 -3" (click)="playGame()" *ngIf="buttonVisible" class="raycastable" raycastable (mouseenter) ="mouseEnterInfo()" (mouseleave) ="mouseLeaveInfo()" rotation="0 0 180"     
+         ></a-entity>
+        
+        <a-entity id="play-button" geometry="primitive: circle"  material="color: white; src: #instruction-texture" [attr.scale]="buttonScalePlay" position="1 3 -3" (click)="playSound()" *ngIf="buttonVisible" class="raycastable" raycastable (mouseenter) ="mouseEnterPlay()" (mouseleave) ="mouseLeavePlay()"   
+         ></a-entity>
+
+                 
+
+
+      </a-sky> 
+      <a-entity text="value:Escuchar instrucciones; color:#e9e9e9; negate:false; font:/assets/resources/font/custom/custom-msdf.json; align:center"  position="-1 2 -3" scale="5 5 5" rotation="0 0 0" *ngIf="playlabelVisible && buttonVisible" id="texti"></a-entity>
+      <a-entity text="value:Comenzar actividad; color:#e9e9e9; negate:false; font:/assets/resources/font/custom/custom-msdf.json; align:center"  position="1 2 -3" scale="5 5 5" rotation="0 0 0" *ngIf="infolabelVisible && buttonVisible" id="textp"></a-entity>
+
+
+      <a-entity text="value:3; color:#e9e9e9; negate:false; font:/assets/resources/font/custom/custom-msdf.json; align:center"  position="0 2 -3" scale="7 7 7" rotation="0 0 0" *ngIf="oneVisible" id="textp"></a-entity>
+
+      <a-entity text="value:2; color:#e9e9e9; negate:false; font:/assets/resources/font/custom/custom-msdf.json; align:center"  position="0 2 -3" scale="7 7 7" rotation="0 0 0" *ngIf="twoVisible" id="textp"></a-entity>
+
+      <a-entity text="value:1; color:#e9e9e9; negate:false; font:/assets/resources/font/custom/custom-msdf.json; align:center"  position="0 2 -3" scale="7 7 7" rotation="0 0 0" *ngIf="threeVisible" id="textp"></a-entity>
+
+      <!-- Pared del fondo  -->
+      <a-plane position="0 0 -100" rotation="0 0 0" width="100" height="125"  material="src: #wood-texture" ></a-plane> 
+      <a-plane position="0 -10 -99" rotation="0 0 0" width="25" height="30"  color="#808B96" material="src: #door-texture"  ></a-plane> 
+      <!-- <a-plane position="8 -10 -99" rotation="0 0 0" width="12" height="22"  color="#808B96"  ></a-plane>  -->
+
+
+      <!-- Piso  -->
+      <a-plane position="0 -15 -30" rotation="-90 0 0"width="100" height="100" color="#808B96"  material="src: #bottom-floor-texture" ></a-plane>
+      <a-plane position="0 -7 6" rotation="-90 0 0"width="100" height="30" color="#808B96"  material="src: #upper-floor-texture" >
+        
+      </a-plane>
+
+      <!-- Techo  -->
+      <a-plane position="0 50 -30" rotation="90 0 0" width="100" height="100" color="#808B96" material="src: #celing-texture"></a-plane>
+
+      <!-- Paredes  -->
+      <a-plane position="40 0 -30" rotation="0 -89 0" width="100" height="100" color="#6E2C00"  material="src: #wood-texture"></a-plane>
+      <a-plane position="-40 0 -30" rotation="0 89 0" width="100" height="100" color="#6E2C00"  material="src: #wood-texture"></a-plane>
+
+      <!-- <a-image  src="#textinfo"  position="0 -2 -30" scale="5 5 5" ></a-image> -->
+      <!--<a-image position="0 0 -15" src="#"  width="50" height="10" ></a-image> -->
+
+
+      <a-entity id="lecturn1" *ngIf="isLoaded" gltf-model="#lectern"  position="0 -5 -1" scale="0.045 0.045 0.045" rotation="0 -180 0"  > 
+      
+      </a-entity>
+      <a-entity id="board1" *ngIf="isLoaded" gltf-model="#board"  position="-10 -8 0" scale="1 1 1" rotation="0 60 0" ></a-entity>
+
+
+
+      
+      <!-- <a-entity id="male21111" *ngIf="isLoaded" gltf-model="#male" position="2 0 -2.5" scale="0.03 0.03 0.03"  ></a-entity>      
+      <a-entity id="male21111" *ngIf="isLoaded" gltf-model="#male" position="-2 0 -2.5" scale="0.03 0.03 0.03"  ></a-entity>
+      
+      
+      <a-entity id="lecturn1" *ngIf="isLoaded" gltf-model="#lectern" position="2 0 -4" scale="0.05 0.05 0.05"   ></a-entity> 
+
+
+      <a-entity id="male" *ngIf="isLoaded" gltf-model="#male" position="2 0 -4" scale="0.03 0.03 0.03"  ></a-entity>
+      <a-entity id="male2" *ngIf="isLoaded" gltf-model="#male" position="0 0 -4" scale="0.03 0.03 0.03"  ></a-entity>
+      <a-entity id="male3" *ngIf="isLoaded" gltf-model="#male" position="-4 0 -4" scale="0.03 0.03 0.03"  ></a-entity>
+
+      <a-entity id="male1" *ngIf="isLoaded" gltf-model="#male" position="-2 0 -6" scale="0.03 0.03 0.03"  ></a-entity>
+      <a-entity id="male21" *ngIf="isLoaded" gltf-model="#male" position="2 0 -6" scale="0.03 0.03 0.03"  ></a-entity>
+      <a-entity id="male31" *ngIf="isLoaded" gltf-model="#male" position="4 0 -6" scale="0.03 0.03 0.03"  ></a-entity> -->
+
+      
+      
+
+      
+<!-- 
+      <a-entity id="glbtest" *ngIf="isLoaded" gltf-model="#chair" position="0 -14 -63" rotation="0 35 0"  scale="1.3 1.3 1.3" ></a-entity> -->
+      <!-- <a-entity id="glbtest" *ngIf="isLoaded" gltf-model="#chair" position="0 -14 -63" rotation="0 35 0"  scale="1.3 1.3 1.3" ></a-entity> -->
+      <a-entity id="glbtest6" *ngIf="isLoaded" gltf-model="#chair" position="-10 -14 -63" rotation="0 35 0"  scale="1.3 1.3 1.3" ></a-entity>
+      <a-entity id="glbtest7" *ngIf="isLoaded" gltf-model="#chair" position="10 -14 -63" rotation="0 35 0"  scale="1.3 1.3 1.3" ></a-entity>
+      <a-entity id="glbtest8" *ngIf="isLoaded" gltf-model="#chair" position="-20 -14 -63" rotation="0 35 0"  scale="1.3 1.3 1.3" ></a-entity>
+      <a-entity id="glbtest9" *ngIf="isLoaded" gltf-model="#chair" position="20 -14 -63" rotation="0 35 0"  scale="1.3 1.3 1.3" ></a-entity>
+
+      <!-- <a-entity id="glbtest1" *ngIf="isLoaded" gltf-model="#chair" position="0 -14 -48" rotation="0 35 0"  scale="1.3 1.3 1.3" ></a-entity> -->
+      <a-entity id="glbtest61" *ngIf="isLoaded" gltf-model="#chair" position="-10 -14 -48" rotation="0 35 0"  scale="1.3 1.3 1.3" ></a-entity>
+      <a-entity id="glbtest71" *ngIf="isLoaded" gltf-model="#chair" position="10 -14 -48" rotation="0 35 0"  scale="1.3 1.3 1.3" ></a-entity>
+      <a-entity id="glbtest81" *ngIf="isLoaded" gltf-model="#chair" position="-20 -14 -48" rotation="0 35 0"  scale="1.3 1.3 1.3" ></a-entity>
+      <a-entity id="glbtest91" *ngIf="isLoaded" gltf-model="#chair" position="20 -14 -48" rotation="0 35 0"  scale="1.3 1.3 1.3" ></a-entity>
+      
+      <!-- <a-entity id="glbtest1" *ngIf="isLoaded" gltf-model="#chair" position="0 -14 -20" rotation="0 35 0"  scale="1.3 1.3 1.3" ></a-entity> -->
+      <a-entity id="glbtest61" *ngIf="isLoaded" gltf-model="#chair" position="-10 -14 -20" rotation="0 35 0"  scale="1.3 1.3 1.3" ></a-entity>
+      <a-entity id="glbtest71" *ngIf="isLoaded" gltf-model="#chair" position="10 -14 -20" rotation="0 35 0"  scale="1.3 1.3 1.3" ></a-entity>
+      <a-entity id="glbtest81" *ngIf="isLoaded" gltf-model="#chair" position="-20 -14 -20" rotation="0 35 0"  scale="1.3 1.3 1.3" ></a-entity>
+      <a-entity id="glbtest91" *ngIf="isLoaded" gltf-model="#chair" position="20 -14 -20" rotation="0 35 0"  scale="1.3 1.3 1.3" ></a-entity>
+
+        <!-- <a-entity id="glbtest1" *ngIf="isLoaded" gltf-model="#chair" position="0 -14 -33" rotation="0 35 0"  scale="1.3 1.3 1.3" ></a-entity> -->
+      <a-entity id="glbtest61" *ngIf="isLoaded" gltf-model="#chair" position="-10 -14 -33" rotation="0 35 0"  scale="1.3 1.3 1.3" ></a-entity>
+      <a-entity id="glbtest71" *ngIf="isLoaded" gltf-model="#chair" position="10 -14 -33" rotation="0 35 0"  scale="1.3 1.3 1.3" ></a-entity>
+      <a-entity id="glbtest81" *ngIf="isLoaded" gltf-model="#chair" position="-20 -14 -33" rotation="0 35 0"  scale="1.3 1.3 1.3" ></a-entity>
+      <a-entity id="glbtest91" *ngIf="isLoaded" gltf-model="#chair" position="20 -14 -33" rotation="0 35 0"  scale="1.3 1.3 1.3" ></a-entity> 
+
+      
+ <!-- <a-entity id="menglbtest" *ngIf="isLoaded" gltf-model="#smen" position="0 -15 -63" rotation="0 0 0" animation-mixer  scale="2.5 2.5 2.5" ></a-entity>
+<a-entity id="menglbtest" *ngIf="isLoaded" gltf-model="#smen" position="0 -15 -63" rotation="0 0 0" animation-mixer  scale="2.5 2.5 2.5" ></a-entity>
+<a-entity id="menglbtest6" *ngIf="isLoaded" gltf-model="#smen" position="-10 -15 -63" rotation="0 0 0" animation-mixer  scale="2.5 2.5 2.5" ></a-entity>
+<a-entity id="menglbtest7" *ngIf="isLoaded" gltf-model="#smen" position="10 -15 -63" rotation="0 0 0" animation-mixer  scale="2.5 2.5 2.5" ></a-entity>
+<a-entity id="menglbtest8" *ngIf="isLoaded" gltf-model="#smen" position="-20 -15 -63" rotation="0 0 0" animation-mixer  scale="2.5 2.5 2.5" ></a-entity>
+<a-entity id="menglbtest9" *ngIf="isLoaded" gltf-model="#smen" position="20 -15 -63" rotation="0 0 0" animation-mixer  scale="2.5 2.5 2.5" ></a-entity>
+
+<a-entity id="menglbtest1" *ngIf="isLoaded" gltf-model="#smen" position="0 -15 -48" rotation="0 0 0" animation-mixer  scale="2.5 2.5 2.5" ></a-entity>
+<a-entity id="menglbtest61" *ngIf="isLoaded" gltf-model="#smen" position="-10 -15 -48" rotation="0 0 0" animation-mixer  scale="2.5 2.5 2.5" ></a-entity>
+<a-entity id="menglbtest71" *ngIf="isLoaded" gltf-model="#smen" position="10 -15 -48" rotation="0 0 0" animation-mixer  scale="2.5 2.5 2.5" ></a-entity>
+<a-entity id="menglbtest81" *ngIf="isLoaded" gltf-model="#smen" position="-20 -15 -48" rotation="0 0 0" animation-mixer  scale="2.5 2.5 2.5" ></a-entity>
+<a-entity id="menglbtest91" *ngIf="isLoaded" gltf-model="#smen" position="20 -15 -48" rotation="0 0 0" animation-mixer  scale="2.5 2.5 2.5" ></a-entity> -->
+
+<a-entity id="menglbtest1" *ngIf="isLoaded" gltf-model="#smen" position="-10 -14.5 -47.5" rotation="0 0 0" animation-mixer  scale="2.5 2.5 2.5" ></a-entity>
+<a-entity id="menglbtest61" *ngIf="isLoaded" gltf-model="#smen" position="-10 -14.5 -19.5" rotation="0 0 0" animation-mixer  scale="2.5 2.5 2.5" ></a-entity>
+<a-entity id="menglbtest71" *ngIf="isLoaded" gltf-model="#smen" position="10 -14.5 -19.5" rotation="0 0 0" animation-mixer  scale="2.5 2.5 2.5" ></a-entity>
+<a-entity id="menglbtest81" *ngIf="isLoaded" gltf-model="#smen" position="-20 -14.5 -19.5" rotation="0 0 0" animation-mixer  scale="2.5 2.5 2.5" ></a-entity>
+<a-entity id="menglbtest91" *ngIf="isLoaded" gltf-model="#smen" position="20 -14.5 -62.5" rotation="0 0 0" animation-mixer  scale="2.5 2.5 2.5" ></a-entity>
+
+<a-entity id="menglbtest1" *ngIf="isLoaded" gltf-model="#smen" position="20 -14.5 -47.5" rotation="0 0 0" animation-mixer  scale="2.5 2.5 2.5" ></a-entity>
+<a-entity id="menglbtest61" *ngIf="isLoaded" gltf-model="#smen" position="-10 -14.5 -32.5" rotation="0 0 0" animation-mixer  scale="2.5 2.5 2.5" ></a-entity>
+<a-entity id="menglbtest71" *ngIf="isLoaded" gltf-model="#smen" position="10 -14.5 -62.5" rotation="0 0 0" animation-mixer  scale="2.5 2.5 2.5" ></a-entity>
+<a-entity id="menglbtest81" *ngIf="isLoaded" gltf-model="#smen" position="-20 -14.5 -32.5" rotation="0 0 0" animation-mixer  scale="2.5 2.5 2.5" ></a-entity> 
+<a-entity id="menglbtest91" *ngIf="isLoaded" gltf-model="#smen" position="20 -14.5 -32.5" rotation="0 0 0" animation-mixer  scale="2.5 2.5 2.5" ></a-entity> 
+</a-scene>
+
+
